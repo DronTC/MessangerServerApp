@@ -1,6 +1,76 @@
 @MessangerServerApp_HostAddress = http://localhost:5233
 
-GET {{MessangerServerApp_HostAddress}}/weatherforecast/
-Accept: application/json
+### Create user
+POST {{MessangerServerApp_HostAddress}}/api/users
+Content-Type: application/json
 
-###
+{
+  "Login": "Test user",
+  "Email": "testtest@example.com",
+  "Password": "123456789"
+}
+
+### Get user
+GET {{MessangerServerApp_HostAddress}}/api/users/4
+
+### Update user
+PUT {{MessangerServerApp_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "Updated Name"
+}
+
+### Delete user
+DELETE {{MessangerServerApp_HostAddress}}/api/users/3
+
+### Create message
+POST {{MessangerServerApp_HostAddress}}/api/messages
+Content-Type: application/json
+
+{
+  "Content": "Привет, как дела?",
+  "SendingTime": "15:30:00",
+  "UserId": 5,
+  "ChatId": 2
+}
+
+### Get message
+GET {{MessangerServerApp_HostAddress}}/api/messages/2
+
+### Update message
+PUT {{MessangerServerApp_HostAddress}}/api/messages
+Content-Type: application/json
+
+{
+  "Id": 5,
+  "Content": "Обновленный текст сообщения"
+}
+
+### Delete message
+DELETE {{MessangerServerApp_HostAddress}}/api/messages/5
+
+### Create chat
+POST {{MessangerServerApp_HostAddress}}/api/chats
+Content-Type: application/json
+
+{
+  "Name": "Общий чат",
+  "UserIds": [4, 5, 6]
+}
+
+### Get chat
+GET {{MessangerServerApp_HostAddress}}/api/chats/2
+
+### Update chat
+PUT {{MessangerServerApp_HostAddress}}/api/chats
+Content-Type: application/json
+
+{
+  "Id": 2,
+  "Name": "Новое название чата"
+}
+
+### Delete chat
+DELETE {{MessangerServerApp_HostAddress}}/api/chats/2

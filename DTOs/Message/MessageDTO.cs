@@ -1,4 +1,4 @@
-﻿namespace MessangerServerApp.DTOs
+﻿namespace MessangerServerApp.DTOs.Message
 {
     public class MessageDTO
     {

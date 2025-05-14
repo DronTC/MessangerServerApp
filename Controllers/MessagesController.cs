@@ -1,34 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MessangerServerApp.Services.Interfaces;
+﻿using MessangerServerApp.DTOs.Message;
 using MessangerServerApp.DTOs.User;
+using MessangerServerApp.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MessangerServerApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
-    public class UsersController : ControllerBase
+    public class MessagesController: ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly ILogger<UsersController> _logger;
+        private readonly IMessageService _messageService;
+        private readonly ILogger<MessagesController> _logger;
 
-        public UsersController(
-            IUserService userService,
-            ILogger<UsersController> logger)
+        public MessagesController(
+            IMessageService messageService,
+            ILogger<MessagesController> logger)
         {
-            _userService = userService;
+            _messageService = messageService;
             _logger = logger;
         }
 
-        [HttpGet("{id}", Name = "GetUserById")]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [HttpGet("{id}", Name = "GetMessageById")]
+        [ProducesResponseType(typeof(MessageDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetUserAsync(int id)
+        public async Task<IActionResult> GetMessageAsync(int id)
         {
             try
             {
-                var user = await _userService.GetUserByIdAsync(id);
-                return Ok(user);
+                var message = await _messageService.GetMessageByIdAsync(id);
+                return Ok(message);
             }
             catch (KeyNotFoundException ex)
             {
@@ -37,24 +38,23 @@ namespace MessangerServerApp.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при получении пользователя");
+                _logger.LogError(ex, "Ошибка при получении сообщения");
                 return StatusCode(500, "Внутренняя ошибка сервера");
             }
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(MessageDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserDTO createUserDto)
+        public async Task<IActionResult> CreateMessageAsync([FromBody] CreateMessageDTO createMessageDto)
         {
             try
             {
-                var createdUser = await _userService.CreateUserAsync(createUserDto);
-                Console.WriteLine(createdUser.Login);
+                var createdMessage = await _messageService.CreateMessageAsync(createMessageDto);
                 return CreatedAtRoute(
-                    "GetUserById", // имя маршрута
-                    new { id = createdUser.Id }, // параметры
-                    createdUser);
+                    "GetMessageById", // имя маршрута
+                    new { id = createdMessage.Id }, // параметры
+                    createdMessage);
             }
             catch (ArgumentException ex)
             {
@@ -63,21 +63,21 @@ namespace MessangerServerApp.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при создании пользователя");
+                _logger.LogError(ex, "Ошибка при добавлении сообщения");
                 return StatusCode(500, "Внутренняя ошибка сервера");
             }
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MessageDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDTO updateUserDto)
+        public async Task<IActionResult> UpdateMessage([FromBody] UpdateMessageDTO updateMessageDto)
         {
             try
             {
-                var updatedUser = await _userService.UpdateUserAsync(updateUserDto);
-                return Ok(updatedUser);
+                var updatedMessage = await _messageService.UpdateMessageAsync(updateMessageDto);
+                return Ok(updatedMessage);
             }
             catch (KeyNotFoundException ex)
             {
@@ -86,7 +86,7 @@ namespace MessangerServerApp.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при обновлении пользователя");
+                _logger.LogError(ex, "Ошибка при обновлении сообщения");
                 return StatusCode(500, "Внутренняя ошибка сервера");
             }
         }
@@ -94,11 +94,11 @@ namespace MessangerServerApp.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteMessage(int id)
         {
             try
             {
-                await _userService.DeleteUserAsync(id);
+                await _messageService.DeleteMessageAsync(id);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -108,7 +108,7 @@ namespace MessangerServerApp.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при удалении пользователя");
+                _logger.LogError(ex, "Ошибка при удалении сообщения");
                 return StatusCode(500, "Внутренняя ошибка сервера");
             }
         }

@@ -58,7 +58,7 @@ namespace MessangerServerApp.Services.Data
             var user = await _userRepository.GetByIdAsync(id);
 
             if (user == null)
-                throw new KeyNotFoundException($"Пользователь с ID ${id} не найден");
+                throw new KeyNotFoundException($"Пользователь с ID {id} не найден");
             await _userRepository.DeleteAsync(user);
         }
 
@@ -67,7 +67,7 @@ namespace MessangerServerApp.Services.Data
             var user = await _userRepository.GetByIdAsync(updateUserDTO.Id);
 
             if (user == null)
-                throw new KeyNotFoundException($"Пользователь с ID ${updateUserDTO.Id} не найден");
+                throw new KeyNotFoundException($"Пользователь с ID {updateUserDTO.Id} не найден");
             _mapper.Map(updateUserDTO, user);
 
             await _userRepository.UpdateAsync(user);

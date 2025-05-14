@@ -2,6 +2,7 @@ using Data.Interfaces;
 using MessangerServerApp.Data;
 using MessangerServerApp.Data.Repositories;
 using MessangerServerApp.Services.Data;
+using MessangerServerApp.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace MessangerServerApp
@@ -17,17 +18,18 @@ namespace MessangerServerApp
             
             
             builder.Services.AddScoped<IUserRepository, UserRepository>();
-            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-            //builder.Services.AddScoped<MessageService>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
             builder.Services.AddScoped<IChatRepository, ChatRepository>();
-            //builder.Services.AddScoped<ChatService>();
-            builder.Services.AddScoped<IChatUserRepository, ChatUserRepository>();
-            //builder.Services.AddScoped<ChatUserService>();
+            builder.Services.AddScoped<IChatService, ChatService>();
+
+            builder.Services.AddControllers();
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
             var app = builder.Build();
 
+            app.MapControllers();
             app.Run();
         }
     }
