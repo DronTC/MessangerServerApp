@@ -10,15 +10,9 @@ namespace MessangerServerApp.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ILogger<UsersController> _logger;
 
         public UsersController(
-            IUserService userService,
-            ILogger<UsersController> logger)
-        {
-            _userService = userService;
-            _logger = logger;
-        }
+            IUserService userService) => _userService = userService;
 
         [HttpGet("{id}", Name = "GetUserById")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
@@ -31,13 +25,11 @@ namespace MessangerServerApp.Controllers
                 return Ok(user);
             }
             catch (KeyNotFoundException ex)
-            {
-                _logger.LogWarning(ex, ex.Message);
+            {   
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при получении пользователя");
                 return StatusCode(500, "Внутренняя ошибка сервера");
             }
         }
@@ -58,12 +50,12 @@ namespace MessangerServerApp.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, ex.Message);
+                //_logger.LogWarning(ex, ex.Message);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при создании пользователя");
+                //_logger.LogError(ex, "Ошибка при создании пользователя");
                 return StatusCode(500, "Внутренняя ошибка сервера");
             }
         }
@@ -81,12 +73,12 @@ namespace MessangerServerApp.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, ex.Message);
+               // _logger.LogWarning(ex, ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при обновлении пользователя");
+                //_logger.LogError(ex, "Ошибка при обновлении пользователя");
                 return StatusCode(500, "Внутренняя ошибка сервера");
             }
         }
@@ -103,12 +95,12 @@ namespace MessangerServerApp.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, ex.Message);
+                //_logger.LogWarning(ex, ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при удалении пользователя");
+                //_logger.LogError(ex, "Ошибка при удалении пользователя");
                 return StatusCode(500, "Внутренняя ошибка сервера");
             }
         }

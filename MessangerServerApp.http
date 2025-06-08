@@ -18,8 +18,17 @@ PUT {{MessangerServerApp_HostAddress}}/api/users
 Content-Type: application/json
 
 {
-  "id": 3,
+  "id": 6,
   "name": "Updated Name"
+}
+
+### Login user
+GET {{MessangerServerApp_HostAddress}}/api/users
+Content-Type: application/json
+{
+  "Login": 123123123,
+  "Email": 123123123@gmail.com,
+  "Password": 12345678
 }
 
 ### Delete user
